@@ -11,19 +11,21 @@ def portfolio_cost(file):
 
     p = open(file)
     rows = csv.reader(p)
-    headers = next(p)
+    headers = next(rows)
 
 
     #with open(file, 'rt') as p:
      #   headers = next(p)
 
-    for row in rows:
+    for rowno, row in enumerate(rows, start=1):
+        record = dict(zip(headers, row))
         try:
-            numshares = int(row[1])
-            currprice = float(row[2])
+            numshares = int(record['shares'])
+            currprice = float(record['price'])
+            portfoliovalue += numshares * currprice
         except ValueError:
-            print('Shit value')
-        portfoliovalue += numshares * currprice
+            print(f'Shit value in row {rowno}, value is {row} ')
+
     return portfoliovalue
 
 if len(sys.argv) == 2:
